@@ -1,6 +1,4 @@
 import bs4
-from http.server import BaseHTTPRequestHandler, HTTPServer
-from bottle import template
 with open('static/index.html') as inf:
     txt = inf.read()
     soup = bs4.BeautifulSoup(txt, features="html.parser")
@@ -8,16 +6,17 @@ with open('static/index.html') as inf:
 color = '#44B3C2' #Blue 44B3C2 and Yellow F1A94E
 
 soup.find('div')['style'] = 'background:' + color
-print(soup)
-
-class handler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header('Content-type','text/html')
-        self.end_headers()
-        self.wfile.write(bytes(template(str(soup)), "utf-8"))
+# print(soup)
 
 
+from flask import Flask, render_template_string
 
-with HTTPServer(('', 9000), handler) as server:
-    server.serve_forever()
+app = Flask(__name__)
+ 
+ 
+@app.route("/")
+def index():
+    return render_template_string(str(soup))
+ 
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
