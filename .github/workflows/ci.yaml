@@ -4,6 +4,9 @@ on:
   push:
     branches: [ "main" ]
 
+env:
+  GITHUB_SHA: $(git rev-parse --short "$GITHUB_SHA")
+
 jobs:
 
   build:
@@ -11,8 +14,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: |
-        GITHUB_SHA_SHORT=$(git rev-parse --short "$GITHUB_SHA")
-        docker build . --file Dockerfile --tag pycolors:$GITHUB_SHA_SHORT
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    # - uses: actions/checkout@v3
+    # - name: Build the Docker image
+    #   run: |
+    #     GITHUB_SHA_SHORT=$(git rev-parse --short "$GITHUB_SHA")
+    #     docker build . --file Dockerfile --tag pycolors:$GITHUB_SHA_SHORT
+    -
+      name: build and push
+      uses: docker/build-push-action@v3
+      with:
+        push: true 
+        tags: ${{ github.actor }}/pycolors:$GITHUB_SHA
