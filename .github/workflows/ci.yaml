@@ -62,7 +62,12 @@ jobs:
       name: Bump image tag
       uses: mikefarah/yq@master
       with:
-        cmd: yq -i  '.spec.source.helm.parameters[2].value = "${{ env.SHA_TAG }}"' app-configs/colors-app.yaml 
+        cmd: yq -i '.spec.source.helm.parameters[2].value = "${{ env.SHA_TAG }}"' app-configs/colors-app.yaml
+
+    - 
+      name: Check file contents
+      run: |
+        cat app-configs/colors-app.yaml
 
     - 
       name: Commit the changes
