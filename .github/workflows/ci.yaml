@@ -5,7 +5,8 @@ on:
     branches: [ "main" ]
 
 env:
-  GITHUB_SHA: $(git rev-parse --short "$GITHUB_SHA")
+  REGISTRY: ghcr.io
+  IMAGE_NAME: pycolors
 
 jobs:
 
@@ -31,7 +32,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v4
       with:
-        images: ${{ github.actor }}/pycolors
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         tags: |
           type=sha
 
