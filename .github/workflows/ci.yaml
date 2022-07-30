@@ -79,4 +79,4 @@ jobs:
         title: Update colors-app.yaml
         body: Bump image tag
         branch: github-actions
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.PAT }}
