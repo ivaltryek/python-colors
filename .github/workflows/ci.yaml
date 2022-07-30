@@ -57,17 +57,12 @@ jobs:
       with:
         repository: meet86/argo-cd-examples
         ref: refs/heads/main
-    
+
     -
       name: Bump image tag
       uses: mikefarah/yq@master
       with:
-        cmd: yq -i '.spec.source.helm.parameters[2].value = "${{ env.SHA_TAG }}"' app-configs/colors-app.yaml
-
-    - 
-      name: Check file contents
-      run: |
-        cat app-configs/colors-app.yaml
+        cmd: yq -i '.image.tag = "${{ env.SHA_TAG }}"' manifests/colors/values.yaml
 
     - 
       name: Commit the changes
@@ -81,7 +76,7 @@ jobs:
       uses: peter-evans/create-pull-request@v4
       with:
         commit-message: Bump image tag
-        title: Update colors-app.yaml
+        title: 'Update image sha: ${{ env.SHA_TAG }}'
         body: Bump image tag
         branch: github-actions
         token: ${{ secrets.PAT }}
