@@ -3,7 +3,7 @@ with open('static/index.html') as inf:
     txt = inf.read()
     soup = bs4.BeautifulSoup(txt, features="html.parser")
 
-color = '#FF0000' #Blue 44B3C2 and Yellow F1A94E
+color = '#FFC0CB' #Blue 44B3C2 and Yellow F1A94E
 
 soup.find('div')['style'] = 'background:' + color
 # print(soup)
