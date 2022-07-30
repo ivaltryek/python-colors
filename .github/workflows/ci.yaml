@@ -80,4 +80,3 @@ jobs:
         body: Bump image tag
         branch: github-actions
         token: ${{ secrets.GITHUB_TOKEN }}
-        branch-suffix: ${{ env.SHA_TAG }}
