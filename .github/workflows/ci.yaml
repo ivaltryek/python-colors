@@ -62,7 +62,7 @@ jobs:
       name: Bump image tag
       uses: mikefarah/yq@master
       with:
-        cmd: yq -i  '.spec.source.helm.parameters[2].value = "${{ steps.meta.outputs.tags }}"' app-configs/colors-app.yaml 
+        cmd: yq -i  '.spec.source.helm.parameters[2].value = "${{ env.SHA_TAG }}"' app-configs/colors-app.yaml 
 
     - 
       name: Commit the changes
@@ -80,4 +80,4 @@ jobs:
         body: Bump image tag
         branch: github-actions
         token: ${{ secrets.GITHUB_TOKEN }}
-        branch-suffix: -${{ steps.meta.outputs.tags }}
+        branch-suffix: ${{ env.SHA_TAG }}
