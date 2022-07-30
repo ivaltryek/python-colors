@@ -71,3 +71,5 @@ jobs:
         title: Update colors-app.yaml
         body: Bump image tag
         branch: github-actions
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch-suffix: -${{ steps.meta.outputs.tags }}
