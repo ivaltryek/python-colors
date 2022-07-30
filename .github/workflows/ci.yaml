@@ -44,9 +44,13 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }}
     
     -
-      name: echoing tags
+      name: fetch image tag and set it as env
       run: |
-        echo ${{ steps.meta.outputs.tags }}
+        echo "SHA_TAG=$(echo ${{ steps.meta.outputs.tags }} | grep -o '[^:][a-z]\+-[a-z0-9]\+')" >> $GITHUB_ENV
+    
+    - name: echo IMAGE_SHA_TAG
+      run: |
+        echo ${{ env.SHA_TAG }}
     -
       name: Checkout to Helm repo
       uses: actions/checkout@v3
