@@ -42,3 +42,32 @@ jobs:
       with:
         push: true 
         tags: ${{ steps.meta.outputs.tags }}
+    
+    -
+      name: Checkout to Helm repo
+      uses: actions/checkout@v3
+      with:
+        repository: meet86/argo-cd-examples
+        ref: refs/heads/main
+    
+    -
+      name: Bump image tag
+      uses: mikefarah/yq@master
+      with:
+        cmd: yq -i  '.spec.source.helm.parameters[2].value = "${{ steps.meta.outputs.tags }}"' app-configs/colors-app.yaml 
+
+    - 
+      name: Commit the changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -am "Bump image tag"
+
+    -
+      name: Create Pull Request
+      uses: peter-evans/create-pull-request@v4
+      with:
+        commit-message: Bump image tag
+        title: Update colors-app.yaml
+        body: Bump image tag
+        branch: github-actions
